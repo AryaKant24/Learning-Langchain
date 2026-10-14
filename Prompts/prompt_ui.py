@@ -1,17 +1,23 @@
-from langchain_google_genai import ChatGoogleGenerativeAI
-from dotenv import load_dotenv
+from langchain_groq import ChatGroq
+from dotenv import load_dotenv, load_prompt
 import streamlit as st
 
 load_dotenv()
 
-llm = ChatGoogleGenerativeAI(model="gemini-3.8-flash")
+llm = ChatGroq(model="openai/gpt-oss-120b")
 
 st.header('Research Tool')
 user_input = st.text_input('Enter your prompt')
+
+template = load_prompt('template.json')
 
 if st.button('Summarise'):
     if not user_input.strip():
         st.warning('Enter a prompt before summarising.')
     else:
-        result = llm.invoke(user_input)
-        st.write(result.content)
+        prompt = template.invoke({
+            'paper_input':paper_input,
+            'style_input':style_input,
+            'length_input':length_input
+            }
+        )
