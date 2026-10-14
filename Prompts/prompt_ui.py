@@ -15,9 +15,11 @@ if st.button('Summarise'):
     if not user_input.strip():
         st.warning('Enter a prompt before summarising.')
     else:
-        prompt = template.invoke({
-            'paper_input':paper_input,
-            'style_input':style_input,
-            'length_input':length_input
-            }
-        )
+        chain = template | llm
+        result = chain.invoke({
+                'paper_input':paper_input,
+                'style_input':style_input,
+                'length_input':length_input
+                }
+            )
+        st.write(result.content)
